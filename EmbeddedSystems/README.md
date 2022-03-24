@@ -6,7 +6,7 @@ This repository contains all laboratory assignments completed during the followi
 
 These courses are part of a Massive Open Online Course (MOOC) through the Edx platform from The University of Texas at Austin, taught by Dr. Jonathan Valvano and Dr. Ramesh Yerraballi. They feature the development of software in the C programming language on the ARM Cortex M4 processor. 
 
-This is a 16 week course that is split into two parts, a full description of each module can be found in the [syllabus](http://edx-org-utaustinx.s3.amazonaws.com/UT601x/syllabus.html). 
+This is a 16-week course that is split into two parts, a full description of each module can be found in the [syllabus](http://edx-org-utaustinx.s3.amazonaws.com/UT601x/syllabus.html). 
 
 ## Requirements
  - [Keil uVision 4](https://www.keil.com/demo/eval/armv4.htm) - Keil uVision integrated development environment (IDE) for the ARM
