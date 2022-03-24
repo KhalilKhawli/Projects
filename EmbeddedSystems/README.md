@@ -4,7 +4,7 @@ This repository contains all laboratory assignments completed during the followi
  - [UT.6.10x Embedded Systems - Shape The World: Microcontroller Input/Output](https://www.edx.org/course/embedded-systems-shape-the-world-microcontroller-i)
  - [UT.6.20x Embedded Systems - Shape The World: Multi-Threaded Interfacing](https://www.edx.org/course/embedded-systems-shape-the-world-multi-threaded-in)
 
-These courses are part of a Massive Open Online Course (MOOC) through the Edx platform from The University of Texas at Austin, taught by Dr. Jonathan Valvano and Dr. Ramesh Yerraballi. They feature the development of software in the C programming language on the ARM Cortex M4 processor. 
+These courses are part of a Massive Open Online Course (MOOC) through the [Edx](https://courses.edx.org/) platform from The University of Texas at Austin, taught by Dr. Jonathan Valvano and Dr. Ramesh Yerraballi. They feature the development of software in the C programming language on the ARM Cortex M4 processor. 
 
 This is a 16-week course that is split into two parts, a full description of each module can be found in the [syllabus](http://edx-org-utaustinx.s3.amazonaws.com/UT601x/syllabus.html). 
 
