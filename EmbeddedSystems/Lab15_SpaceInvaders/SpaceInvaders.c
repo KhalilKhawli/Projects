@@ -78,12 +78,8 @@
 #include "Sound.h"
 #include "Switch.h"
 #include "LED.h"
+#include <stdint.h>
 
-//*********************Move to Sprites section**************
-#include <stdint.h> // Move to top in sprites section
-
-
-// Move this to images.h 
 // *************************** Capture image dimensions out of BMP**********
 #define BUNKERW     ((unsigned char)Bunker0[18])
 #define BUNKERH     ((unsigned char)Bunker0[22])
@@ -115,6 +111,7 @@ void Delay1ms(unsigned long count); // time delay in 0.001 seconds
 
 void SysTick_Init(unsigned long period);
 void GameInit(void);
+
 // Draw Functions
 void drawPlayerMissile(void);
 void drawEnemy(void);
@@ -135,7 +132,6 @@ void createEnemyLaser(void);
 void checkLaserCollisions(void);
 void checkMissileCollisions(void);
 
-
 // Game state functons
 void StartGame(void);
 void NewLife(void);
@@ -147,26 +143,6 @@ unsigned long Position;    // 12-bit 0 to 4095 sample
 unsigned long Semaphore;
 unsigned long SW1=0; // current value of switch
 long prevSW1 = 0;        // previous value of SW1
-
-// Modules:
-//  Game Engine:
-//		Nokia5110
-//    	Images
-// 			Sprites
-//    ADC sampled at 30 Hz
-//    Sound
-//    Switch
-//    LEDs
-
-// Things to do:
-// Change function for naming convention PascalCase
-//  ADC_Init() public function
-//  ADCInit() private function
-// Rename "playerBullet" to "playerMissiles[Missile]"
-// move defines to images.h 
-// Change the missile mechanism
-// change all global variables to look like "Semaphore" variable
-// change GameState into a Finite State Machine
 
 typedef enum {dead, alive} status_t;
 struct sprite {
