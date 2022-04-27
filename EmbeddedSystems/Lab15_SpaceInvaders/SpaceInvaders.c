@@ -1,4 +1,4 @@
-// 0.Documentation Section
+// 0. Documentation Section
 
 // SpaceInvaders.c
 // Runs on LM4F120/TM4C123
@@ -70,17 +70,16 @@
 // SSI0Clk       (SCLK, pin 7) connected to PA2
 // back light    (LED, pin 8) not connected, consists of 4 white LEDs which draw ~80mA total
 
+#include <stdint.h> 
 #include "..//tm4c123gh6pm.h"
 #include "Nokia5110.h"
 #include "Random.h"
 #include "TExaS.h"
-
 #include "Images.h"
 #include "ADC.h"
 #include "Sound.h"
 #include "Switch.h"
 #include "LED.h"
-#include <stdint.h> 
 
 // 1. Pre-processor Directives Section
 // *************************** Capture image dimensions out of BMP**********
@@ -194,8 +193,7 @@ int main(void){
 	Random_Init(1); // linear congruential multiplier
   Nokia5110_Init();	
   Nokia5110_ClearBuffer();
-	Nokia5110_DisplayBuffer();      // draw buffer
-	
+	Nokia5110_DisplayBuffer();      // draw buffer	
 	Board_Init();
 		
 	GameState = stateStartGame;
@@ -257,7 +255,6 @@ void Board_Init(void){
 	LED_Init();
 	ADC0_Init();
 }
-
 void GameInit(void){
 	int missile;
 	int laser;
@@ -333,7 +330,6 @@ row	3 | x[2][0] | x[2][1]  | x[2][2]  | x[2][3] |
 		}
 	}
 }
-
 void GameDraw(void){
 		Nokia5110_ClearBuffer();
 		drawPlayerShip();
@@ -370,9 +366,6 @@ void checkPlayerFire(void){int missile = 0;
 	}
 	prevSW1 = SW1;
 }
-
-
-
 void moveEnemy(void){	int row, column;
 	int enemyAliveCounter = 0;
 	// For Music:
@@ -515,7 +508,6 @@ void drawPlayerMissile(void){int missile;
 		}
 	}
 }
-
 void createEnemyLaser(void){int laser=0;
 	int row, column;
 	
@@ -534,7 +526,6 @@ void createEnemyLaser(void){int laser=0;
 		laser++;
 	} while (laser < MAXENEMYLASORS);
 }
-
 void drawEnemyLasers(void){int laser;
 	for(laser = 0; laser < MAXENEMYLASORS; laser++){
 		if(enemyLasers[laser].needDraw){
@@ -544,7 +535,6 @@ void drawEnemyLasers(void){int laser;
 		}
 	}
 }
-
 void moveEnemyLasers(void){int laser;
 	for (laser = 0; laser < MAXENEMYLASORS; laser++){
 		enemyLasers[laser].y += enemyLasers[laser].vy;
