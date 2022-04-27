@@ -589,7 +589,6 @@ void drawPlayerScore(unsigned short n){
 	Nokia5110_SetCursor(10, 0);
 	Nokia5110_OutChar(PlayerLives+'0');
 }
-
 void StartGame(void){
 	do {
 		Nokia5110_Clear();
@@ -607,7 +606,6 @@ void StartGame(void){
 	} while(!SW1);
 	GameState = statePlayGame;
 }
-
 void NewLife(void){int laser; int missile;
 	// remove enemy bullets
 	for (laser = 0; laser < MAXENEMYLASORS; laser++){
@@ -635,7 +633,6 @@ void GameOver(void){
   Nokia5110_OutUDec(PlayerScore);
 	Delay1ms(50);
 }
-
 void AllEnemyDead(void){
 	Nokia5110_Clear();
   Nokia5110_SetCursor(1, 1);
@@ -645,7 +642,6 @@ void AllEnemyDead(void){
   Nokia5110_SetCursor(2, 5);
   Nokia5110_OutUDec(PlayerScore);
 }
-
 void Delay100ms(unsigned long count){unsigned long volatile time;
   while(count>0){
     time = 727240;  // 0.1sec at 80 MHz
