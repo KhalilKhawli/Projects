@@ -1,3 +1,5 @@
+// 0.Documentation Section
+
 // SpaceInvaders.c
 // Runs on LM4F120/TM4C123
 // Jonathan Valvano and Daniel Valvano
@@ -78,8 +80,9 @@
 #include "Sound.h"
 #include "Switch.h"
 #include "LED.h"
-#include <stdint.h>
+#include <stdint.h> 
 
+// 1. Pre-processor Directives Section
 // *************************** Capture image dimensions out of BMP**********
 #define BUNKERW     ((unsigned char)Bunker0[18])
 #define BUNKERH     ((unsigned char)Bunker0[22])
@@ -104,46 +107,8 @@
 #define MINX 2
 #define MAXENEMYLASORS 5
 
-void DisableInterrupts(void); // Disable interrupts
-void EnableInterrupts(void);  // Enable interrupts
-void Delay100ms(unsigned long count); // time delay in 0.1 seconds
-void Delay1ms(unsigned long count); // time delay in 0.001 seconds
-
-void SysTick_Init(unsigned long period);
-void GameInit(void);
-
-// Draw Functions
-void drawPlayerMissile(void);
-void drawEnemy(void);
-void drawEnemyLasers(void);
-void drawPlayerShip(void);
-void drawPlayerScore(unsigned short n);	
-
-// Move Functions
-void moveEnemy(void);
-void moveEnemyLasers(void);
-void movePlayerShip(void);
-void movePlayerMissile(void);
-
-// Collison detection
-unsigned short enemyAtEdge(void);
-void checkPlayerFire(void);
-void createEnemyLaser(void);
-void checkLaserCollisions(void);
-void checkMissileCollisions(void);
-
-// Game state functons
-void StartGame(void);
-void NewLife(void);
-void GameOver(void);
-void AllEnemyDead(void);
-
-// *****************************Globals**************************
-unsigned long Position;    // 12-bit 0 to 4095 sample
-unsigned long Semaphore;
-unsigned long SW1=0; // current value of switch
-long prevSW1 = 0;        // previous value of SW1
-
+// 2. Declarations Section
+//****************Globals************************
 typedef enum {dead, alive} status_t;
 struct sprite {
 	int32_t x; // x coordinate
@@ -169,19 +134,60 @@ const unsigned char *enemyRowType[6] = {
 	SmallEnemy10PointA,	
 	SmallEnemy10PointB};
 
-unsigned short checkCollision(sprite_t sprite1, sprite_t sprite2);
-
 unsigned short PlayerScore; // unsigned short = 2 bytes 0 - 
 unsigned short PlayerLives;
-//****************************************
+unsigned long Position;    // 12-bit 0 to 4095 sample
+unsigned long Semaphore;
+unsigned long SW1=0; 			// current value of switch
+long prevSW1 = 0;         // previous value of SW1
+	
+// Function Prototypes
+void DisableInterrupts(void); // Disable interrupts
+void EnableInterrupts(void);  // Enable interrupts
+void Delay100ms(unsigned long count); // time delay in 0.1 seconds
+void Delay1ms(unsigned long count); // time delay in 0.001 seconds
+
+void SysTick_Init(unsigned long period);	
+void GameInit(void);
+void Board_Init(void);
+	
+// Draw Function Prototypes
+void GameDraw(void);
+void drawPlayerMissile(void);
+void drawEnemy(void);
+void drawEnemyLasers(void);
+void drawPlayerShip(void);
+void drawPlayerScore(unsigned short n);	
+
+// Move Function Prototypes
+void moveEnemy(void);
+void moveEnemyLasers(void);
+void movePlayerShip(void);
+void movePlayerMissile(void);
+
+// Collison Detection Function Prototypes
+unsigned short enemyAtEdge(void);
+void checkPlayerFire(void);
+void createEnemyLaser(void);
+void checkLaserCollisions(void);
+void checkMissileCollisions(void);
+unsigned short checkCollision(sprite_t sprite1, sprite_t sprite2);
+
+// Game State Function Prototypes
+void StartGame(void);
+void NewLife(void);
+void GameOver(void);
+void AllEnemyDead(void);
+
 // Finite State Machine
-unsigned long GameState; // change this to a finite state machine
+unsigned long GameState; 
 #define stateStartGame      0
 #define statePlayGame       1
 #define stateNewLife        2
 #define stateGameOver       3
 #define stateAllEnemyDead   4
-//****************************************
+// 3. Subroutines Section
+// main is mandatory for a C Program to be executable
 int main(void){ 
   TExaS_Init(SSI0_Real_Nokia5110_Scope);  // set system clock to 80 MHz
 
@@ -189,21 +195,11 @@ int main(void){
   Nokia5110_Init();	
   Nokia5110_ClearBuffer();
 	Nokia5110_DisplayBuffer();      // draw buffer
-//***************Board Init()**********
-	Switch_Init();
-	LED_Init();
-	ADC0_Init();
-//********************
+	
+	Board_Init();
+		
 	GameState = stateStartGame;
 	StartGame();
-	EnableInterrupts();
-	Sound_Init();
-	SysTick_Init(80000000/30);
-
-	PlayerScore = 0;
-	PlayerLives = 3;
-	
-	// code here
 	GameInit();
 
 	Semaphore = 0;
@@ -211,15 +207,7 @@ int main(void){
 	// Game loop
 	while(PlayerLives){ 
     while(Semaphore == 0){};
-		Nokia5110_ClearBuffer();
-
-		drawPlayerShip();
-		drawPlayerMissile();
-		drawEnemy();
-		drawEnemyLasers();
-		
-		Nokia5110_DisplayBuffer();
-		drawPlayerScore(PlayerScore);
+		GameDraw();
 		switch(GameState) {	
 			case (stateNewLife) :
 				playerShip.image[0] = PlayerShip0;
@@ -264,13 +252,28 @@ void SysTick_Handler(void){
 	} 
 	Semaphore = 1;
 }
+void Board_Init(void){
+	Switch_Init();
+	LED_Init();
+	ADC0_Init();
+}
 
 void GameInit(void){
 	int missile;
 	int laser;
 	int row, column;
+	
+	// Init Scores
+	PlayerScore = 0;
+	PlayerLives = 3;
+	// Init Sound
+	EnableInterrupts();
+	Sound_Init();
+	// Init Speed
+	SysTick_Init(80000000/30);
+	
 	Random_Init(NVIC_ST_CURRENT_R); // linear congruential multiplier
-	// init enemy laser
+	// Init enemy laser
 	for(laser = 0; laser < MAXENEMYLASORS; laser++){
 		enemyLasers[laser].x = 0;
 		enemyLasers[laser].y = 0;
@@ -283,7 +286,7 @@ void GameInit(void){
 		enemyLasers[laser].h = MISSILEH; // height
 		enemyLasers[laser].needDraw = 0; // true if need to draw 
 	}
-	// init player bullet
+	// Init player bullet
 	for (missile = 0; missile<MAXPLAYERMISSILES; missile++){
 		playerMissiles[missile].x = 0;
 		playerMissiles[missile].y = 0;
@@ -296,7 +299,7 @@ void GameInit(void){
 		playerMissiles[missile].h = MISSILEH; // height
 		playerMissiles[missile].needDraw = 0; // true if need to draw 
 	}
-	// init playerShip
+	// Init playerShip
 	playerShip.x = 32; // x coordinate
 	playerShip.y = 47; // y coordinate
 	playerShip.vx = 0; // speed/velocity in x direction
@@ -330,6 +333,16 @@ row	3 | x[2][0] | x[2][1]  | x[2][2]  | x[2][3] |
 		}
 	}
 }
+
+void GameDraw(void){
+		Nokia5110_ClearBuffer();
+		drawPlayerShip();
+		drawPlayerMissile();
+		drawEnemy();
+		drawEnemyLasers();
+		Nokia5110_DisplayBuffer();
+		drawPlayerScore(PlayerScore);
+}
 void movePlayerShip(void){
 	Position = ADC0_In(); // read data;
 	playerShip.x = (int)(MAX_X-PLAYERW)*(float)Position/4095; 
@@ -357,6 +370,8 @@ void checkPlayerFire(void){int missile = 0;
 	}
 	prevSW1 = SW1;
 }
+
+
 
 void moveEnemy(void){	int row, column;
 	int enemyAliveCounter = 0;
@@ -659,5 +674,3 @@ void Delay1ms(unsigned long count){unsigned long volatile time;
     count--;
   }
 }
-
-
