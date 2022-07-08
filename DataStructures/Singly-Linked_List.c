@@ -41,7 +41,6 @@ void print_list(sllnode* head);
 // 4. Delete a single element from a linked list
 // 5. Delete an entire linked list
 
-
 // 3. Subroutines Section
 int main(void)
 {
